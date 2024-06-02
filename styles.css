@@ -63,7 +63,7 @@ body{
     /* border: 1px solid blue; */
     width:240.66px;
     display: flex;
-
+    
     align-items: center;
 }
 .doctor-img{
@@ -104,7 +104,7 @@ body{
     padding-top: 0.75em;
     padding-bottom: 0.75em;
     max-height: 1054px;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .search-img{
@@ -117,10 +117,10 @@ body{
     max-height: calc(1054px - 24px - 3em);
     overflow: auto;
     padding-left: 25px;
-    padding-right: 11px;
+    padding-right: 19px;
 }
 .sidebar-member-container::-webkit-scrollbar{
-    width: 4px ;
+    width: 6px ;
     border-radius: 15px ;
 }
 
@@ -169,7 +169,7 @@ body{
     background-color: #FFFFFF !important;
     border-radius: 16px;
     height: 673px;
-    padding: 0.4em;
+    padding: 1.2em;
 
 }
 
@@ -249,6 +249,47 @@ body{
     margin-bottom: 0.5em;
 }
 
+.dignostic-list{
+    padding: 1.2em;
+    margin: 18px 0 ;
+    background-color: #FFFFFF !important;
+    border-radius: 16px;
+    height: 349px;
+    overflow: hidden;
+
+}
+.dignostic-list-grid{
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 0.5fr;
+    margin-top: 1em;
+}
+
+.for-grey-bg{
+    background: #F6F7F8;
+    border-radius: 24px;
+    padding: 14px 16px;
+    height: 48px;
+    margin-bottom: 1em ;
+}
+.for-grid-overflow{
+    max-height: 330px ;
+    min-height: 200px ;
+    overflow: auto ;
+}
+.for-grid-overflow::-webkit-scrollbar{
+    width: 6px ;
+    border-radius: 15px ;
+}
+
+.for-grid-overflow::-webkit-scrollbar-track {
+    background: #E3E4E6;
+    border-radius: 15px;
+}
+
+.for-grid-overflow::-webkit-scrollbar-thumb {
+    background: #072635;
+    border-radius: 15px;
+}
                         /* jessica info  */
 .jessica-info-box{
     width: 350px;
@@ -300,19 +341,23 @@ body{
 }
 .lab-result-box{
     max-height: 296px;
+    /* overflow: ; */
+}
+.lab-result-info-box{
+    max-height: 230px;
     overflow: auto;
 }
-.lab-result-box::-webkit-scrollbar{
+.lab-result-info-box::-webkit-scrollbar{
     width: 6px ;
     border-radius: 15px ;
 }
 
-.lab-result-box::-webkit-scrollbar-track {
+.lab-result-info-box::-webkit-scrollbar-track {
     background: #E3E4E6;
     border-radius: 15px;
 }
 
-.lab-result-box::-webkit-scrollbar-thumb {
+.lab-result-info-box::-webkit-scrollbar-thumb {
     background: #072635;
     border-radius: 15px;
     /* max-height: 51px !important; */
