@@ -2,6 +2,8 @@ const monthNames = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];
+
+//for fetching information
 async function fetchData()
 {
     try {
@@ -26,14 +28,14 @@ async function fetchData()
                 }
         })
 
-        updateDomElementsWithAPIData(patients,jessicaInfo);
+        updateDomElementsWithAPIData(patients,jessicaInfo);   //passing patients for sidebar and jessica for remaining chart and details
 
     } catch (error) {
         console.log(error);
     }
 }
 
-function updateDomElementsWithAPIData(patients,jessicaInfo)
+function updateDomElementsWithAPIData(patients,jessicaInfo)         //to update the element into the dom
 {
     let sidebarMemberContainer=document.querySelector('.sidebar-member-container');
 
@@ -49,7 +51,9 @@ function updateDomElementsWithAPIData(patients,jessicaInfo)
     //     </div>`;
     // });
 
-    patients.forEach((element)=>{
+    
+
+    patients.forEach((element)=>{                               //sidebar patient info
         let patientnameimgcontainer=document.createElement('div');
         patientnameimgcontainer.classList.add('d-flex', 'align-items-center', 'justify-content-between','my-3');
 
@@ -86,6 +90,8 @@ function updateDomElementsWithAPIData(patients,jessicaInfo)
     })
     
 
+
+    //jessica profile picture and other personal details 
     let jessicaImg=document.querySelector('.jessica-image');
     jessicaImg.src=jessicaInfo.profile_picture;
 
@@ -110,6 +116,8 @@ function updateDomElementsWithAPIData(patients,jessicaInfo)
     Emergency.innerHTML=jessicaInfo.emergency_contact;
     Insurance.innerHTML=jessicaInfo.insurance_type;
 
+
+    //lab result 
     let labresultMainContainer=document.querySelector('.lab-result-info-box');
     jessicaInfo.lab_results.forEach((element)=>{
         let labresultcontainer=document.createElement('div');
@@ -132,66 +140,79 @@ function updateDomElementsWithAPIData(patients,jessicaInfo)
     })
     
 
+    let dignosticlistgrid=document.querySelector('.dignostic-list-grid');
+
+    //dignosis list
+    jessicaInfo.diagnostic_list.forEach(element=>{
+        
+        let proeblem=document.createElement('div');
+        proeblem.classList.add('my-3','jessica-info-titles');
+        proeblem.innerText=element.name;
+
+        let description=document.createElement('div');
+        description.classList.add('my-3','jessica-info-titles');
+        description.innerText=element.description;
+
+        let status=document.createElement('div');
+        status.classList.add('my-3','jessica-info-titles');
+        status.innerText=element.status;
+
+        dignosticlistgrid.appendChild(proeblem);
+        dignosticlistgrid.appendChild(description);
+        dignosticlistgrid.appendChild(status);
+
+    })
+
+    const diagnosisHistorytemp = jessicaInfo.diagnosis_history;                                     //getting the digonsis history from above jessica info
+    const diagnosisHistory=diagnosisHistorytemp.filter((records,index)=>index<=5).reverse();        //to get only first 6 records
+    const months = diagnosisHistory.map(entry => `${entry.month.substring(0,3)} ${entry.year}`);    //for chart x axis month and year
+    const systolicValues = diagnosisHistory.map(entry => entry.blood_pressure.systolic.value);      //for chart systolic values
+    const diastolicValues = diagnosisHistory.map(entry => entry.blood_pressure.diastolic.value);    //for chart distolic values
+
+    const ctx = document.getElementById('bloodPressureChart').getContext('2d');
+    const bloodPressureChart = new Chart(ctx, {             //from chart.js
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: [
+                {
+                    label: '',
+                    data: systolicValues,
+                    borderColor: '#E66FD2',
+                    backgroundColor: 'rgba(255, 99, 132)',
+                    fill: false,
+                    tension: 0.5
+                },
+                {
+                    label: '',
+                    data: diastolicValues,
+                    borderColor: '#8C6FE6',
+                    backgroundColor: 'rgba(54, 162, 235)',
+                    fill: false,
+                    tension: 0.5
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {                  //to remove default square box label 
+                legend: {
+                  labels: {
+                    boxWidth: 0
+                  }
+                }
+              },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    min:60,
+                },
+                x: {                           
+                }
+            }
+        }
+    });
+
 }
 
-document.addEventListener('DOMContentLoaded',fetchData);
-document.addEventListener('DOMContentLoaded', function () {
-    fetch('https://fedskillstest.coalitiontechnologies.workers.dev',{
-        headers: {
-            'Authorization': 'Basic ' + btoa('coalition:skills-test')
-          }
-    })
-        .then(response => response.json())
-        .then(data => {
-            const diagnosisHistorytemp = data[3].diagnosis_history;
-            const diagnosisHistory=diagnosisHistorytemp.filter((records,index)=>index<=5).reverse();
-            const months = diagnosisHistory.map(entry => `${entry.month.substring(0,3)} ${entry.year}`);
-            const systolicValues = diagnosisHistory.map(entry => entry.blood_pressure.systolic.value);
-            const diastolicValues = diagnosisHistory.map(entry => entry.blood_pressure.diastolic.value);
-
-            const ctx = document.getElementById('bloodPressureChart').getContext('2d');
-            const bloodPressureChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: months,
-                    datasets: [
-                        {
-                            label: '',
-                            data: systolicValues,
-                            borderColor: '#E66FD2',
-                            backgroundColor: 'rgba(255, 99, 132)',
-                            fill: false,
-                            tension: 0.5
-                        },
-                        {
-                            label: '',
-                            data: diastolicValues,
-                            borderColor: '#8C6FE6',
-                            backgroundColor: 'rgba(54, 162, 235)',
-                            fill: false,
-                            tension: 0.5
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                          labels: {
-                            boxWidth: 0
-                          }
-                        }
-                      },
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            min:60,
-                        },
-                        x: {                           
-                        }
-                    }
-                }
-            });
-        })
-        .catch(error => console.error('Error fetching data:', error));
-});
+document.addEventListener('DOMContentLoaded',fetchData);        //fetching api after DOM loaded
