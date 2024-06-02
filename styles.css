@@ -96,7 +96,8 @@ body{
 }
 
 .sidebar{
-    width: 367px;
+    width: 370px;
+    /* width: 367px; */
     /* border: 1px solid blue; */
     background-color: #FFFFFF;
     margin: 18px 0 18px 18px;
@@ -161,7 +162,9 @@ body{
 }
 
 .diagnosis-history-container{
-    width: 740x;
+    width: 690px;
+    /* width: 740x; */
+
 }
 .diagnosis-history-subcontainer{
     /* flex-grow: 1; */
@@ -363,3 +366,14 @@ body{
     /* max-height: 51px !important; */
 }
 
+
+
+@media screen and (min-width:1550px) {
+    .jessica-info-box,.sidebar{
+        flex-grow: 1;
+    }
+    .diagnosis-history-container{
+        flex-grow: 1.5;
+
+    }
+}
